@@ -3,6 +3,7 @@ import { View, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
+import { tintColorLightGray } from "@/constants/Colors";
 
 export default function PasswordInput() {
   const [password, setPassword] = useState("");
@@ -16,6 +17,7 @@ export default function PasswordInput() {
         value={password}
         onChangeText={setPassword}
         placeholder="Senha"
+        placeholderTextColor={tintColorLightGray}
         secureTextEntry={hidePassword}
       />
 

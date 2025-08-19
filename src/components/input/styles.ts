@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
   },
   inputPassword: {
     flex: 1,
+    fontSize: 16,
   },
   icon: {
     position: "absolute",
