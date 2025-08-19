@@ -17,4 +17,10 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#ffffff",
   },
+  textButton: {
+    color: "#000",
+    fontSize: 15,
+    fontWeight: "bold",
+    padding: 10,
+  },
 });

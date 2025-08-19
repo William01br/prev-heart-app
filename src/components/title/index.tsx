@@ -6,7 +6,7 @@ type Props = TextProps & {
   children: React.ReactNode;
 };
 
-export default function Title({ children, ...rest }: Props) {
+export function Title({ children, ...rest }: Props) {
   return (
     <Text style={styles.title} {...rest}>
       {children}

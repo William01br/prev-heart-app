@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
     borderColor: tintColorLightGray,
     padding: 12,
     fontSize: 16,
-    marginBottom: 5,
   },
   containerInput: {
     width: "100%",

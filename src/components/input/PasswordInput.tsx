@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { View, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 import { tintColorLightGray } from "@/constants/Colors";
 
-export default function PasswordInput() {
+export function PasswordInput({ ...rest }: TextInputProps) {
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
 
@@ -19,6 +24,7 @@ export default function PasswordInput() {
         placeholder="Senha"
         placeholderTextColor={tintColorLightGray}
         secureTextEntry={hidePassword}
+        {...rest}
       />
 
       <TouchableOpacity
