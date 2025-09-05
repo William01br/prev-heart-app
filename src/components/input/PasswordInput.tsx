@@ -11,7 +11,7 @@ import { styles } from "./styles";
 import { tintColorLightGray } from "@/constants/Colors";
 
 export function PasswordInput({ ...rest }: TextInputProps) {
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
 
   return (
@@ -19,8 +19,8 @@ export function PasswordInput({ ...rest }: TextInputProps) {
       <TextInput
         key={hidePassword ? "secure" : "plain"}
         style={styles.inputPassword}
-        value={password}
-        onChangeText={setPassword}
+        // value={password}
+        // onChangeText={setPassword}
         placeholder="Senha"
         placeholderTextColor={tintColorLightGray}
         secureTextEntry={hidePassword}

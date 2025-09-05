@@ -9,18 +9,10 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 30,
-    marginBottom: 40,
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#ffffff",
-  },
-  textButton: {
-    color: "#000",
-    fontSize: 15,
-    fontWeight: "bold",
-    padding: 10,
   },
 });
