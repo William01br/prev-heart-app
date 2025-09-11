@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { router } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
 
 import { useAuth } from "@/contexts/AuthContext";
 import HorizontalLine from "@/components/horizontalLine";
@@ -14,7 +15,7 @@ export default function Menu() {
   const { signOut } = useAuth();
 
   async function logout() {
-    signOut();
+    await signOut();
     router.replace("/(auth)/Login");
   }
 
@@ -23,18 +24,31 @@ export default function Menu() {
       <View style={styles.container}>
         <Text style={styles.title}>Menu</Text>
         <ButtonMenu
+          onPress={() =>
+            router.navigate(
+              "/(elder)/(withoutNavBar)/(menuOptions)/personalInformationScreen"
+            )
+          }
           iconStart={<DatabaseIcon />}
           title="Meus dados"
           iconEnd={<ArrowForwardIcon />}
         ></ButtonMenu>
         <HorizontalLine />
         <ButtonMenu
+          onPress={() =>
+            router.navigate("/(elder)/(withoutNavBar)/(menuOptions)/(device)")
+          }
           iconStart={<DeviceIcon />}
           title="Dispositivo"
           iconEnd={<ArrowForwardIcon />}
         />
         <HorizontalLine />
         <ButtonMenu
+          onPress={() =>
+            router.navigate(
+              "/(elder)/(withoutNavBar)/(menuOptions)/(caregiver)"
+            )
+          }
           iconStart={<PersonIcon />}
           title="Cuidador"
           iconEnd={<ArrowForwardIcon />}
@@ -43,14 +57,12 @@ export default function Menu() {
         <ButtonMenu
           iconStart={<ArrowBackIcon />}
           title="Sair"
-          onPress={logout}
+          onPress={async () => await logout()}
         />
       </View>
     </View>
   );
 }
-
-// arrow-right-to-bracket --> ICON para o logout
 
 const styles = StyleSheet.create({
   container: {
