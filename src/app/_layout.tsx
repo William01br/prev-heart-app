@@ -1,12 +1,20 @@
 import React from "react";
-import { AuthProvider } from "@/contexts/AuthContext";
 import { Slot } from "expo-router";
-// import PushNotificationManager from "@/components/pushNotificationManager";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { AuthProvider } from "@/contexts/AuthContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <Slot />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <NotificationProvider>
+        <AuthProvider>
+          <Slot />
+        </AuthProvider>
+      </NotificationProvider>
+    </QueryClientProvider>
   );
 }
