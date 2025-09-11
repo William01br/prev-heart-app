@@ -6,28 +6,76 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
+  TouchableOpacity,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useState } from "react";
+import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
 
 import { tintColorLightBlue } from "@/constants/Colors";
 import { Button } from "@/components/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { deviceIdSchema } from "@/utils/deviceIdSchema";
+import { createDevice } from "@/utils/http/createDevice";
+import LoadingIcon from "@/components/icons/loading";
 
 export default function RegisterDeviceModal() {
-  // useState para guardar o valor do ID
-  // +
-  // função no onPress -> Fetch para API
+  const { user } = useAuth();
+  if (!user) throw new Error("user not stored");
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
-  // FALTA FINALIZAR O CLOSE DO MODAL
-  // AJEITAR
+  const [deviceId, setDeviceId] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const handleChange = (deviceId: string) => {
+    setDeviceId(deviceId);
+    try {
+      deviceIdSchema.parse({ deviceId });
+      setError(null);
+    } catch (err) {
+      if (err instanceof z.ZodError) setError(err.issues[0].message);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      deviceIdSchema.parse({ deviceId });
+
+      setIsTransitioning(true);
+
+      await createDevice({ token: user.token, deviceId });
+
+      queryClient.invalidateQueries({ queryKey: ["myBpmElder", user.id] });
+
+      router.navigate("/(elder)/(withNavBar)");
+    } catch (err) {
+      setIsTransitioning(false);
+      if (err instanceof z.ZodError) setError(err.issues[0].message);
+    }
+  };
+
+  if (isTransitioning) return <LoadingIcon />;
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <Modal>
+    <Modal>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
         <View style={styles.container}>
           <View style={styles.box}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.close}
+              onPress={() => router.back()}
+            >
+              <AntDesign name="closecircle" size={32} color="#000" />
+            </TouchableOpacity>
+
             <MaterialCommunityIcons
               name="heart-pulse"
               size={82}
@@ -44,14 +92,21 @@ export default function RegisterDeviceModal() {
               style={styles.input}
               placeholder="Código do dispositivo"
               placeholderTextColor="#a49d9dff"
+              value={deviceId}
+              onChangeText={handleChange}
             />
+            {error && (
+              <Text style={styles.error}>
+                O ID do dispositivo deve ser válido
+              </Text>
+            )}
 
-            <View style={{ height: 40 }}></View>
-            <Button title="Registrar" />
+            <View style={{ height: 30 }}></View>
+            <Button title="Registrar" onPress={handleSubmit} />
           </View>
         </View>
-      </Modal>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </Modal>
   );
 }
 
@@ -67,7 +122,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 40,
     backgroundColor: "#fff",
-    height: 400,
+    height: 410,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -90,5 +145,15 @@ const styles = StyleSheet.create({
     padding: 12,
     height: 52,
     fontSize: 16,
+  },
+  close: {
+    alignSelf: "flex-end",
+    left: 30,
+    bottom: 2,
+  },
+  error: {
+    color: "red",
+    marginTop: 10,
+    alignSelf: "flex-start",
   },
 });

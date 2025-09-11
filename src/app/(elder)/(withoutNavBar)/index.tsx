@@ -9,7 +9,7 @@ export default function RegisterDevice() {
   const router = useRouter();
 
   function callModal() {
-    router.navigate("/(elder)/(withoutNavBar)/registerDeviceModal");
+    router.push("/(elder)/(withoutNavBar)/registerDeviceModal");
   }
   return (
     <>
@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 20,
     fontSize: 20,
-    // fontWeight: "bold",
     textAlign: "center",
     color: "#000",
   },
