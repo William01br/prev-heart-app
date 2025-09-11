@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   KeyboardAvoidingView,
@@ -17,6 +17,7 @@ import { Input } from "@/components/input";
 import { Button } from "@/components/button";
 import { useFormData } from "@/contexts/FormDataContent";
 import { useForm, Controller } from "react-hook-form";
+import LoadingIcon from "@/components/icons/loading";
 
 const profileSchema = z.object({
   email: z.email(),
@@ -27,7 +28,9 @@ const profileSchema = z.object({
 type FormDataProfile = z.infer<typeof profileSchema>;
 
 export default function RegisterProfileScreen() {
-  const { updateFormData } = useFormData();
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const { updateFormData, formData } = useFormData();
   const {
     control,
     handleSubmit,
@@ -36,16 +39,35 @@ export default function RegisterProfileScreen() {
     resolver: zodResolver(profileSchema),
   });
 
-  const onSubmit = (data: FormDataProfile) => {
+  const onSubmit = async (data: FormDataProfile) => {
     updateFormData(data);
-    router.push("/");
+    const { cpf, password, role } = formData;
+    const payload = { cpf, password, role, ...data };
+
+    setIsTransitioning(true);
+
+    const res = await fetch(
+      `${process.env.EXPO_PUBLIC_API_URL}/auth/register`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+    if (!res) throw new Error("Request failed");
+    router.replace("/");
   };
+
+  if (isTransitioning) return <LoadingIcon />;
 
   return (
     <>
       <Stack.Screen options={{ title: "Etapa 3" }} />
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: "#fff" }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView keyboardShouldPersistTaps="handled">

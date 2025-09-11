@@ -1,4 +1,12 @@
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Button,
+  Pressable,
+} from "react-native";
 import { useState } from "react";
 import { router, Stack } from "expo-router";
 
@@ -12,7 +20,7 @@ export default function RegisterRoleScreen() {
   const { updateFormData } = useFormData();
   const [_role, setRole] = useState("");
 
-  const handleNext = (role: string) => {
+  const handleNext = (role: "elder" | "caregiver") => {
     setRole(role);
     updateFormData({ role });
     router.push("/Register/RegisterCredentialsScreen");
@@ -26,28 +34,34 @@ export default function RegisterRoleScreen() {
           <Title>Você é?</Title>
           <View style={{ height: 30 }}></View>
 
-          <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity
-              style={styles.containerImage}
-              activeOpacity={0.6}
-              onPress={() => handleNext("elder")}
-            >
-              <Image source={IMAGES.elder} style={styles.image} />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.containerImage}
-              activeOpacity={0.6}
-              onPress={() => handleNext("caregiver")}
-            >
+          <View style={styles.content}>
+            <View style={styles.containerImage}>
               <Image source={IMAGES.caregiver} style={styles.image} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.containerText}>
-            <Text style={styles.elderTextLeft}>Idoso</Text>
-            <Text style={styles.caregiverTextRigth}>Cuidador</Text>
+              <View style={{ height: 20 }}></View>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={styles.containerButton}
+                onPress={() => handleNext("caregiver")}
+              >
+                <Text style={styles.textButton}>Cuidador</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.containerImage}>
+              <Image source={IMAGES.elder} style={styles.image} />
+              <View style={{ height: 20 }}></View>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={styles.containerButton}
+                onPress={() => handleNext("elder")}
+              >
+                <Text style={styles.textButton}>Idoso</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
+          <View style={{ height: 20 }}></View>
           <View style={styles.containerTextButton}>
             <Text style={styles.text}>Volte para a tela de </Text>
             <TouchableOpacity
@@ -65,43 +79,46 @@ export default function RegisterRoleScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.9,
+    flex: 1,
+  },
+  content: {
+    justifyContent: "space-between",
+    width: "100%",
+    flexDirection: "row",
+    height: 250,
+  },
+  containerButton: {
+    width: "100%",
+    borderRadius: 16,
+    height: 30,
+    backgroundColor: "#cad7e7ff",
+    justifyContent: "center",
+    alignItems: "center",
   },
   textButton: {
     color: "#000",
-    fontSize: 15,
-    fontWeight: "bold",
-    padding: 10,
+    fontSize: 14,
+    fontWeight: "600",
+    textAlign: "center",
   },
   containerImage: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.125,
     shadowRadius: 3.84,
     elevation: 5,
     borderRadius: 12,
+    backgroundColor: "#ffffffff",
+    flexDirection: "column",
+    width: "47%",
+    height: 220,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
   },
   image: {
-    width: 150,
-    height: 150,
-    borderRadius: 12,
-    margin: 16,
-  },
-  containerText: {
-    flexDirection: "row",
-    marginTop: -20,
-    marginBottom: 60,
-  },
-  elderTextLeft: {
-    marginLeft: 20,
-    marginRight: 70,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  caregiverTextRigth: {
-    marginLeft: 40,
-    fontSize: 20,
-    fontWeight: "bold",
+    width: 120,
+    height: 120,
   },
   containerTextButton: {
     flexDirection: "row",
