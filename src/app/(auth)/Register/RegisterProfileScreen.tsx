@@ -18,6 +18,7 @@ import { Button } from "@/components/button";
 import { useFormData } from "@/contexts/FormDataContent";
 import { useForm, Controller } from "react-hook-form";
 import LoadingIcon from "@/components/icons/loading";
+import { API_URL } from "@/constants/url";
 
 const profileSchema = z.object({
   email: z.email(),
@@ -46,17 +47,14 @@ export default function RegisterProfileScreen() {
 
     setIsTransitioning(true);
 
-    const res = await fetch(
-      `${process.env.EXPO_PUBLIC_API_URL}/auth/register`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      }
-    );
+    const res = await fetch(`${API_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
     if (!res) throw new Error("Request failed");
     router.replace("/");
   };
@@ -68,7 +66,7 @@ export default function RegisterProfileScreen() {
       <Stack.Screen options={{ title: "Etapa 3" }} />
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: "#fff" }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView keyboardShouldPersistTaps="handled">
           <AuthContainer>

@@ -1,4 +1,12 @@
-import { StyleSheet, Modal, View, Text, Button } from "react-native";
+import {
+  StyleSheet,
+  Modal,
+  View,
+  Text,
+  Button,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
@@ -40,7 +48,7 @@ export default function ExcludeDeviceModal() {
   if (isTransitioning) return <LoadingIcon />;
 
   return (
-    <Modal>
+    <Modal transparent animationType="fade" statusBarTranslucent={true}>
       <View style={styles.container}>
         <View style={styles.box}>
           <View style={styles.circle}>
@@ -55,16 +63,34 @@ export default function ExcludeDeviceModal() {
             <View
               style={[styles.button, { backgroundColor: tintColorLightGray }]}
             >
-              <Button
-                title="Cancelar"
-                color="#000"
-                onPress={() => router.back()}
-              />
+              {Platform.OS === "ios" ? (
+                <Button
+                  title="Cancelar"
+                  color="#000"
+                  onPress={() => router.back()}
+                />
+              ) : (
+                <TouchableOpacity onPress={() => router.back()}>
+                  <Text style={styles.textButtonAndroid}>Cancelar</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <View
               style={[styles.button, { backgroundColor: tintColorLightBlue }]}
             >
-              <Button title="Desvincular" color="#fff" onPress={handleSubmit} />
+              {Platform.OS === "ios" ? (
+                <Button
+                  title="Desvincular"
+                  color="#fff"
+                  onPress={handleSubmit}
+                />
+              ) : (
+                <TouchableOpacity onPress={handleSubmit}>
+                  <Text style={[styles.textButtonAndroid, { color: "#fff" }]}>
+                    Desvincular
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
@@ -124,5 +150,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
+  },
+  textButtonAndroid: {
+    fontWeight: "500",
+    fontSize: 16,
   },
 });

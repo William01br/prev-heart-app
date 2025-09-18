@@ -57,7 +57,7 @@ export default function RegisterCredentialsScreen() {
       <Stack.Screen options={{ title: "Etapa 2" }} />
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: "#fff" }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView keyboardShouldPersistTaps="handled">
           <AuthContainer>

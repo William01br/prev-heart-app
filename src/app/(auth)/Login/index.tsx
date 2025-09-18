@@ -19,6 +19,7 @@ import { tintColorLightBlue } from "@/constants/Colors";
 import { useAuth } from "@/contexts/AuthContext";
 import { Role } from "@/utils/types/Role";
 import { ErrorMessage } from "@/utils/types/ErrorMessage";
+import LoadingIcon from "@/components/icons/loading";
 
 const credentialsSchema = z.object({
   cpf: z.string().trim().length(11, "CPF deve ter 11 caracteres"),
@@ -33,6 +34,7 @@ export default function Index() {
   const [errorCpf, setErrorCpf] = useState<string | null>(null);
   const [errorPassword, setErrorPassword] = useState<string | null>(null);
   const [errorGeneral, setErrorGeneral] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCpf = (cpf: string) => setCpf(cpf);
   const handlePassword = (password: string) => setPassword(password);
@@ -52,10 +54,14 @@ export default function Index() {
         return;
       }
 
+      setIsLoading(true);
+
       const request: Role | ErrorMessage = await signIn({ cpf, password });
 
+      // colocar um loading aqui.
       if (typeof request === "object") {
         setErrorGeneral(request.error);
+        setIsLoading(false);
         return;
       }
 
@@ -64,9 +70,13 @@ export default function Index() {
       else if (request === "elder") router.replace("/(elder)/(withNavBar)");
       else router.replace("/(auth)/Login");
     } catch (err) {
-      throw new Error("Internal Server Error");
+      console.error(err);
+      setErrorGeneral("Erro interno, tente novamente.");
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) return <LoadingIcon />;
 
   return (
     <KeyboardAvoidingView

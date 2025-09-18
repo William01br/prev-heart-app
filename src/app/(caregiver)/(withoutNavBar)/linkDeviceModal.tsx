@@ -76,10 +76,10 @@ export default function RegisterDeviceModal() {
   if (isTransitioning) return <LoadingIcon />;
 
   return (
-    <Modal>
+    <Modal transparent animationType="fade" statusBarTranslucent={true}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.container}>
           <View style={styles.box}>
@@ -88,7 +88,7 @@ export default function RegisterDeviceModal() {
               style={styles.close}
               onPress={() => router.back()}
             >
-              <AntDesign name="closecircle" size={32} color="#000" />
+              <AntDesign name="close-circle" size={32} color="#000" />
             </TouchableOpacity>
 
             <FontAwesome5 name="link" size={60} color={tintColorLightBlue} />
@@ -110,7 +110,7 @@ export default function RegisterDeviceModal() {
             />
             {error && <Text style={styles.error}>{error}</Text>}
 
-            <View style={{ height: 20 }}></View>
+            {!error && <View style={{ height: 20 }}></View>}
             <Button title="Vincular" onPress={handleSubmit} />
           </View>
         </View>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 40,
     backgroundColor: "#fff",
-    height: 430,
+    height: Platform.OS === "ios" ? 430 : 450,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: "red",
-    marginTop: 10,
+    marginVertical: 10,
     alignSelf: "flex-start",
   },
 });

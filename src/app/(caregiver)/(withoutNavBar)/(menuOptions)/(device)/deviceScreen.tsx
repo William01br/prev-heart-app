@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, Platform } from "react-native";
 import { Fontisto, FontAwesome5 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 40,
     backgroundColor: "#fff",
-    height: 370,
+    height: Platform.OS === "android" ? 400 : 370,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",

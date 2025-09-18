@@ -61,10 +61,10 @@ export default function RegisterDeviceModal() {
   if (isTransitioning) return <LoadingIcon />;
 
   return (
-    <Modal>
+    <Modal transparent animationType="fade" statusBarTranslucent={true}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.container}>
           <View style={styles.box}>
@@ -73,7 +73,7 @@ export default function RegisterDeviceModal() {
               style={styles.close}
               onPress={() => router.back()}
             >
-              <AntDesign name="closecircle" size={32} color="#000" />
+              <AntDesign name="close-circle" size={32} color="#000" />
             </TouchableOpacity>
 
             <MaterialCommunityIcons
@@ -101,7 +101,7 @@ export default function RegisterDeviceModal() {
               </Text>
             )}
 
-            <View style={{ height: 30 }}></View>
+            {!error && <View style={{ height: 30 }}></View>}
             <Button title="Registrar" onPress={handleSubmit} />
           </View>
         </View>
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 40,
     backgroundColor: "#fff",
-    height: 410,
+    height: Platform.OS === "ios" ? 410 : 430,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -149,11 +149,11 @@ const styles = StyleSheet.create({
   close: {
     alignSelf: "flex-end",
     left: 30,
-    bottom: 2,
+    bottom: 11,
   },
   error: {
     color: "red",
-    marginTop: 10,
+    marginVertical: 10,
     alignSelf: "flex-start",
   },
 });
