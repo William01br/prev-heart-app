@@ -1,10 +1,12 @@
+import { API_URL } from "@/constants/url";
+
 type DeviceData = {
   token: string;
   deviceId: string;
 };
 
 export const createLinkElder = async ({ token, deviceId }: DeviceData) => {
-  const request = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/users/link`, {
+  const request = await fetch(`${API_URL}/users/link`, {
     method: "PATCH",
     headers: {
       Accept: "application/json",

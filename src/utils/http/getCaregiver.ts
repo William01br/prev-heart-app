@@ -1,20 +1,19 @@
+import { API_URL } from "@/constants/url";
+
 type CaregiverData = {
   name: string;
   phone: string;
 } | null;
 
 export const getCaregiver = async (token: string): Promise<CaregiverData> => {
-  const request = await fetch(
-    `${process.env.EXPO_PUBLIC_API_URL}/users/caregiver`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const request = await fetch(`${API_URL}/users/caregiver`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!request.ok)
     throw new Error(

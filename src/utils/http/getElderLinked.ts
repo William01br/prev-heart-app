@@ -1,3 +1,5 @@
+import { API_URL } from "@/constants/url";
+
 type ElderData = {
   name: string | null;
   phone: string | null;
@@ -6,17 +8,14 @@ type ElderData = {
 };
 
 export const getElderLinked = async (token: string): Promise<ElderData> => {
-  const request = await fetch(
-    `${process.env.EXPO_PUBLIC_API_URL}/users/elder`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const request = await fetch(`${API_URL}/users/elder`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const response = await request.json();
 

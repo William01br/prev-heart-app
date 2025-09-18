@@ -1,3 +1,5 @@
+import { API_URL } from "@/constants/url";
+
 type ProfileData = {
   id: number;
   cpf: string;
@@ -7,7 +9,7 @@ type ProfileData = {
 };
 
 export const getProfile = async (token: string): Promise<ProfileData> => {
-  const request = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/users`, {
+  const request = await fetch(`${API_URL}/users`, {
     method: "GET",
     headers: {
       Accept: "application/json",
