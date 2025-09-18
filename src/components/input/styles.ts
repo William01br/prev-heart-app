@@ -1,5 +1,5 @@
 import { tintColorLightGray } from "@/constants/Colors";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   input: {
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: tintColorLightGray,
     borderRadius: 10,
-    padding: 12,
+    padding: Platform.OS === "ios" ? 12 : 6,
     height: 52,
   },
   inputPassword: {

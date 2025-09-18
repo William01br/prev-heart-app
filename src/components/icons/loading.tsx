@@ -25,7 +25,7 @@ export default function LoadingIcon() {
   return (
     <View style={styles.container}>
       <Animated.View style={{ transform: [{ rotate: spin }] }}>
-        <AntDesign name="loading1" size={48} color={tintColorLightBlue} />
+        <AntDesign name="loading" size={48} color={tintColorLightBlue} />
       </Animated.View>
     </View>
   );

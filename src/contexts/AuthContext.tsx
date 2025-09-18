@@ -8,6 +8,7 @@ import React, {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useNotification } from "./NotificationContext";
+import { API_URL } from "@/constants/url";
 
 type Credentials = {
   cpf: string;
@@ -56,37 +57,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     cpf,
     password,
   }: Credentials): Promise<Role | ErrorMessage> {
-    const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/auth/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cpf, password }),
-    });
-    if (!res.ok) {
-      if (res.status === 404 || res.status === 409 || res.status === 400) {
-        // the user always will receive the message error: "Invalid Credentials"
-        return {
-          status: res.status,
-          error: "Credenciais inválidas",
-        };
+    try {
+      const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cpf, password }),
+      });
+      if (!res.ok) {
+        if (
+          res.status === 404 ||
+          res.status === 409 ||
+          res.status === 400 ||
+          res.status === 401
+        ) {
+          // the user always will receive the message error: "Invalid Credentials"
+          return {
+            status: res.status,
+            error: "Credenciais inválidas",
+          };
+        }
+        throw new Error("Internal Server Error");
       }
-      throw new Error("Internal Server Error");
-    }
 
-    const json = await res.json();
-    const newUser: User = {
-      id: json.id,
-      name: json.name,
-      role: json.role,
-      token: json.accessToken,
-    };
+      const json = await res.json();
+      const newUser: User = {
+        id: json.id,
+        name: json.name,
+        role: json.role,
+        token: json.accessToken,
+      };
 
-    if (newUser.role === "caregiver") {
-      const res = await fetch(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/push-notification`,
-        {
+      if (newUser.role === "caregiver") {
+        const res = await fetch(`${API_URL}/api/push-notification`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -98,31 +103,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             platform,
             osVersion,
           }),
-        }
-      );
-      if (!res.ok) throw new Error("Internal Server Error");
+        });
+        if (!res.ok) throw new Error("Internal Server Error");
+      }
+
+      setUser(newUser);
+      await AsyncStorage.setItem("@myapp:user", JSON.stringify(newUser));
+
+      return newUser.role;
+    } catch (err) {
+      throw new Error("Internal Server Error");
     }
-
-    setUser(newUser);
-    await AsyncStorage.setItem("@myapp:user", JSON.stringify(newUser));
-
-    return newUser.role;
   }
 
   async function signOut() {
     const [token, role] = [user?.token, user?.role];
     if (role === "caregiver") {
-      const res = await fetch(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/push-notification`,
-        {
-          method: "DELETE",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${API_URL}/api/push-notification`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res) throw new Error("Request for delete expo token failed");
     }
 
