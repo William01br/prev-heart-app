@@ -40,14 +40,14 @@ Mais capturas de tela de demonstração podem ser encontrados na pasta [docs](./
 
 Antes de rodar o app mobile, você precisa iniciar a API.
 
-- **Repositório da API:** https://github.com/William01br/prev-heart
+- **Repositório da API:** https://github.com/williamsanttos-dev/prev-heart
 - **Pré-requisitos:** Docker
 
 **Passos**:
 
 ```bash
 # Clonar o repositório da API
-git clone git@github.com:William01br/prev-heart.git
+git clone git@github.com:williamsanttos-dev/prev-heart.git
 cd prev-heart
 
 # Instalar dependências
@@ -77,7 +77,7 @@ npm install --global expo-cli
 
 ```bash
 # Clonar o app
-git clone git@github.com:William01br/prev-heart-app.git
+git clone git@github.com:williamsanttos-dev/prev-heart-app.git
 cd prev-heart-app
 
 # Instalar dependências
@@ -96,4 +96,4 @@ Use o app **Expo Go** no celular (Android/iOS) para escanear o QR Code exibido n
 
 ## Download
 
-Baixe a versão mais recente em [Releases](https://github.com/William01br/prev-heart-app/releases).
+Baixe a versão mais recente em [Releases](https://github.com/williamsanttos-dev/prev-heart-app/releases).
