@@ -1,0 +1,32 @@
+import { tintColorLightGray } from "@/shared/theme/colors";
+import { Platform, StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+  input: {
+    width: "100%",
+    height: 52,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: tintColorLightGray,
+    padding: 12,
+    fontSize: 16,
+  },
+  containerInput: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: tintColorLightGray,
+    borderRadius: 10,
+    padding: Platform.OS === "ios" ? 12 : 6,
+    height: 52,
+  },
+  inputPassword: {
+    flex: 1,
+    fontSize: 16,
+  },
+  icon: {
+    position: "absolute",
+    right: 15,
+  },
+});
