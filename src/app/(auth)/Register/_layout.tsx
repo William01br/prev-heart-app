@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
-import { FormDataProvider } from "@/contexts/FormDataContent";
-import { tintColorLightBlue } from "@/constants/Colors";
+import { FormDataProvider } from "@/features/auth/hooks/useRegisterFormData";
+import { tintColorLightBlue } from "@/shared/theme/colors";
 
 export default function RegisterLayout() {
   return (

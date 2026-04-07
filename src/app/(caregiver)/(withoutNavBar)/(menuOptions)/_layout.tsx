@@ -1,5 +1,5 @@
-import ArrowBackCleanIcon from "@/components/icons/arrowBackClean";
-import { tintColorLightBlue } from "@/constants/Colors";
+import ArrowBackCleanIcon from "@/shared/components/icons/arrowBackClean";
+import { tintColorLightBlue } from "@/shared/theme/colors";
 import { Stack, useRouter } from "expo-router";
 import { StyleSheet, Pressable, Text, View } from "react-native";
 
